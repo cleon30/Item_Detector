@@ -1,6 +1,6 @@
-# Proyecto_PRE
 
-To search for QR Codes in Images:
+
+### To search for QR Codes in Images:
 
 cd darknet
 cd QR_Detection_Darknet
