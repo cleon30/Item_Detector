@@ -7,7 +7,7 @@ import cv2
 
 
 # Load input image
-image = cv2.imread("mas_qr.jpg")
+image = cv2.imread("ROI_0.png")
 # Locate the barcode in the image and decode it
 barcodes = pyzbar.decode(image)
 # Cycle detected barcodes
@@ -31,5 +31,3 @@ for barcode in barcodes:
  print("[INFO] Found {} barcode: {}".format(barcodeType, barcodeData))
 
 # Show output image
-cv2.imshow("Image", image)
-cv2.waitKey(0)
