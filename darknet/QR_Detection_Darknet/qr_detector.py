@@ -38,7 +38,7 @@ model = cv.dnn_DetectionModel(net)
 #frame = cv.imread('test03.jpg')
 #detect('test03.jpg', frame)
 
-frame = cv.imread('test06.jpg')
-detect('test06.jpg', frame)
+frame = cv.imread('mejor_captura10.png')
+detect('mejor_captura10.png', frame)
 
 cv.waitKey()
