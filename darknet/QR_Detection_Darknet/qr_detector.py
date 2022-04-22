@@ -1,7 +1,8 @@
-from this import d
+#from this import d
 import cv2 as cv
 import numpy as np
 import time
+from Scanner_QR_Defectuoso import *
 
 def detect(filename, frame):
     width = 640
@@ -18,15 +19,21 @@ def detect(filename, frame):
     COLOR_BLUE = (255,0,0)
     start_time = time.time()
     classes, scores, boxes = model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
-    print(boxes)
     elapsed_ms = time.time() - start_time
-
+    num = 0
     cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (40, 40), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_RED, 2)
     for (classid, score, box) in zip(classes, scores, boxes):
         label = "%s : %f" % (class_names[classid], score) 
         cv.rectangle(frame, box, COLOR_BLUE, 2)
-        cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2)
+        #cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2)
+        x,y,w,h = box
+        ROI = frame[y:y+h, x:x+w]
+        print()
+        cv.imwrite('ROI_{}.png'.format(num), ROI)
+        num += 1
+        decoder(ROI)
 
+    cv.imshow(filename, frame)
     #cv.imshow(filename, frame)
     #num = 0
     # for box in boxes:
