@@ -14,8 +14,11 @@ class qr_detector:
         self.path = path 
     def show(self, frame):
         return cv.imshow(self, frame)
+    def read(self):
+        return cv.imread(self)
 
-    def decoder(image):
+    def decoder(image, dictionary):
+        
         barcodes = pyzbar.decode(image)
         for barcode in barcodes:
         # The location of the bounding box from which the barcode is extracted
@@ -34,7 +37,13 @@ class qr_detector:
             0.5, (0, 0, 255), 2)
 
             # Print barcode data and barcode type to the terminal
-            print("[INFO] Found {} barcode: {}".format(barcodeType, barcodeData))
+            
+            if barcodeData not in dictionary:
+                dictionary[barcodeData] = 1
+            else:
+                dictionary[barcodeData] += 1
+
+        return dictionary
 
         # Show output image
             
@@ -55,7 +64,7 @@ class qr_detector:
         start_time = time.time()
         classes, scores, boxes = qr_detector.model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
         elapsed_ms = time.time() - start_time
-        num = 0
+        c = {}
         cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (40, 40), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_RED, 2)
         class_names = open('data/obj.names').read().strip().split('\n')
         for (classid, score, box) in zip(classes, scores, boxes):
@@ -67,28 +76,17 @@ class qr_detector:
             print()
             file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
             cv.imwrite(file.name, ROI)
-            qr_detector.decoder(ROI)
+            qr_detector.decoder(ROI,c)
             file.close()
         qr_detector.show(self, frame)
-        #cv.imshow(filename, frame)
-        #num = 0
-        # for box in boxes:
-        #     x,y,w,h = box
-        #     ROI = frame[y:y+h, x:x+w]
-        #     cv.imwrite('ROI_{}.png'.format(num), ROI)
-        #     num += 1
-
-    # Load class names
-        
-
-    # Load YOLOv4-tiny model
+        print(c)  
     net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights')
     net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
     model = cv.dnn_DetectionModel(net)
 
     #frame = cv.imread('test03.jpg')
     #detect('test03.jpg', frame)
-frame = cv.imread('mejor_captura10.png')
+frame = qr_detector.read('mejor_captura10.png')
 qr_detector.detect('mejor_captura10.png', frame)
 
 cv.waitKey(5000)
