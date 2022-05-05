@@ -89,28 +89,31 @@ class qr_detector:
 
     #frame = cv.imread('test03.jpg')
     #detect('test03.jpg', frame)
-
-video = True
-if video ==True:
-    cap = cv2.VideoCapture(0)
-    while(True):
-        ret, frame = cap.read()
-        
-        file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
-        cv2.imwrite(file.name, frame)
-        ret = qr_detector.detect(file.name, frame)
-        cv2.imshow('frame',frame)
-        
-        
-        print(ret, object)
-        file.close()
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+class Mode:
+    def __init__(self, path):
+        self.path = path
+    def Video(path):
+        while(True):
+            ret, frame = path.read()
+            file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
+            cv2.imwrite(file.name, frame)
+            ret = qr_detector.detect(file.name, frame)
+            cv2.imshow('frame',frame)
             
-            break
-# Destroy all the windows
-    cv2.destroyAllWindows()
+            
+            print(ret, object)
+            file.close()
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                
+                break
+    def IP_Camera(path):
+        frame = qr_detector.read(path)
+        print(qr_detector.detect(path, frame))
+        cv2.destroyAllWindows()
 
+video = False
+if video ==True:
+    Mode.Video(cv2.VideoCapture(0))
 else:
-    frame = qr_detector.read('mejor_captura10.png')
-    print(qr_detector.detect('mejor_captura10.png', frame))
+    Mode.IP_Camera('mejor_captura10.png')
 
