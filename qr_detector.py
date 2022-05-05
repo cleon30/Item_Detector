@@ -113,7 +113,7 @@ class Mode:
         print(qr_detector.detect(path, frame))
         cv2.destroyAllWindows()
 
-video = False
+video = True
 imatge = 'mejor_captura10.png'
 if video ==True:
     Mode.Video(cv2.VideoCapture(0))
