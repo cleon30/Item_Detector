@@ -83,15 +83,19 @@ class qr_detector:
             file.close()
         #qr_detector.show(self, frame)
         return dictionary, array, boxes  
+
     net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights')
     net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
     model = cv.dnn_DetectionModel(net)
 
     #frame = cv.imread('test03.jpg')
     #detect('test03.jpg', frame)
+    
 class Mode:
+
     def __init__(self, path):
         self.path = path
+
     def Video(path):
         while(True):
             ret, frame = path.read()
@@ -99,21 +103,20 @@ class Mode:
             cv2.imwrite(file.name, frame)
             ret = qr_detector.detect(file.name, frame)
             cv2.imshow('frame',frame)
-            
-            
             print(ret, object)
             file.close()
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                
                 break
+
     def IP_Camera(path):
         frame = qr_detector.read(path)
         print(qr_detector.detect(path, frame))
         cv2.destroyAllWindows()
 
 video = False
+imatge = 'mejor_captura10.png'
 if video ==True:
     Mode.Video(cv2.VideoCapture(0))
 else:
-    Mode.IP_Camera('mejor_captura10.png')
+    Mode.IP_Camera(imatge)
 
