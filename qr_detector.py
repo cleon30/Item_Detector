@@ -65,6 +65,7 @@ class qr_detector:
         classes, scores, boxes = qr_detector.model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
         elapsed_ms = time.time() - start_time
         c = {}
+        
         cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (40, 40), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_RED, 2)
         class_names = open('data/obj.names').read().strip().split('\n')
         for (classid, score, box) in zip(classes, scores, boxes):
@@ -79,7 +80,7 @@ class qr_detector:
             qr_detector.decoder(ROI,c)
             file.close()
         qr_detector.show(self, frame)
-        print(c)  
+        print(c, boxes)  
     net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights')
     net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
     model = cv.dnn_DetectionModel(net)
