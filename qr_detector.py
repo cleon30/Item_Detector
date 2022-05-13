@@ -5,10 +5,10 @@ import cv2 as cv
 import numpy as np
 import time
 from tempfile import NamedTemporaryFile
+from pandas import array
 from pyzbar import pyzbar
 import argparse
 import cv2
-
 
 class qr_detector:
 
@@ -39,13 +39,9 @@ class qr_detector:
             0.5, (0, 0, 255), 2)
 
             array.append(barcodeData)
-            if barcodeData not in dictionary:
-                dictionary[barcodeData] = 1
-                
-            else:
-                dictionary[barcodeData] += 1
+            
 
-        return dictionary# array
+        return 
 
         # Show output image
             
@@ -82,7 +78,7 @@ class qr_detector:
             qr_detector.decoder(ROI, dictionary, array)
             file.close()
         #qr_detector.show(self, frame)
-        return dictionary, array, boxes  
+        return array
 
     net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights')
     net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
@@ -98,12 +94,20 @@ class Mode:
 
     def Video(path):
         while(True):
+            
             ret, frame = path.read()
             file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
             cv2.imwrite(file.name, frame)
             ret = qr_detector.detect(file.name, frame)
-            cv2.imshow('frame',frame)
-            print(ret, object)
+            qr_detector.show('frame',frame)
+            if len(ret)>=1:
+                for i in ret:
+                    if i not in c:
+                        c.append(i)
+                    else:
+                        pass
+            print(c)
+            #print(ret)
             file.close()
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -113,10 +117,16 @@ class Mode:
         print(qr_detector.detect(path, frame))
         cv2.destroyAllWindows()
 
-video = True
-imatge = 'mejor_captura10.png'
-if video ==True:
-    Mode.Video(cv2.VideoCapture(0))
-else:
-    Mode.IP_Camera(imatge)
 
+
+video = True
+
+input_video = cv2.VideoCapture(0)
+input_imatge = 'mejor_captura10.png'
+new_array= []
+if video ==True:
+    c = []
+    Mode.Video(input_video)
+    
+else:
+    Mode.IP_Camera(input_imatge)
