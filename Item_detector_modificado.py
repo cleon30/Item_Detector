@@ -74,12 +74,19 @@ class captura:
 
     # frame = cv.imread('test03.jpg')
     # detect('test03.jpg', frame)
+    def IP_Camera(self):
+        """procesa la captura y devuelve una lista de los productos detectados """
+        frame = captura.read(self.path)
+        datos = captura.detect(self.path, frame)
+        print(datos)
+        cv2.destroyAllWindows()
+        return datos
 class QR:
-    """ classe QR sha substituit en on s'utilitzava per qr_detector->QR """
+    """Esta clase trabaja con QR se define con el path de la imagen de un QR"""
     def __init__(self, path):
         self.path = path
     def decode(self, dictionary, array):
-        """ decodifica codigos QR proporcionado su path definiendo su diccionario(creo que lo del diccionario de momento no se usa) y el array"""
+        """ Decodifica codigos QR proporcionado un diccionario(creo que lo del diccionario de momento no se usa o el array?) y el array"""
         #he canviat image per self y el nom de la funcio de decode a decoder
         barcodes = pyzbar.decode(self)
         for barcode in barcodes:
@@ -103,17 +110,19 @@ class QR:
         return
 
         # Show output image
-#la classe de Mode shauria de repassar perque tinguin mes sentit al profe no li ha molat
-class Mode:
-    """  """
-
+#NO tinc molt clar si podriem definir una classe nomes pel video que es digui VIDEO i la funcio processadoV
+#Li he canviat els noms ja, pero s'ha d'arreglar perque funcioni que aixo ho saps millor tu.( s'ha de deixar lo de try with)
+class VIDEO:
+    """ Clase video """
+#clase antes MODO -> ahora VIDEO
     def __init__(self, path):
         """
        # >>>
         """
         self.path = path
 
-    def Video(self):
+    def procesadoV(self):
+        """def antes video -> ahora procesadoV"""
         ret, frame = self.path.read()
         #la escritura se tiene que hacer con esta estructura de try y with, s'ha de repassar i mirar que no ho haguem de fer en un altre lloc
         try:
@@ -133,26 +142,21 @@ class Mode:
             print(e)
         return c
 
-    def IP_Camera(self):
-        frame = captura.read(self.path)
-        datos = captura.detect(self.path, frame)
-        print(datos)
-        cv2.destroyAllWindows()
-        return datos
+
 
 #el programa principal tiene que estar dentro del if__name__...
 if __name__ == '__main__':
-    m = Mode('mejor_captura10.png')
+    m = captura('mejor_captura10.png')
     print(m.IP_Camera())
     exit()
 #lo de debajo creo que no sirve de nada ahora
-    video = False
-    input_video = cv2.VideoCapture(0)
-    input_imatge = 'mejor_captura10.png'
-    new_array = []
-    if video == True:
-        c = []
-        Mode.Video(input_video)
+    # video = False
+   # input_video = cv2.VideoCapture(0)
+    #input_imatge = 'mejor_captura10.png'
+    #new_array = []
+    #if video == True:
+     #   c = []
+      #  Mode.Video(input_video)
 
-    else:
-        Mode.IP_Camera(input_imatge)
+    #else:
+     #   Mode.IP_Camera(input_imatge)
