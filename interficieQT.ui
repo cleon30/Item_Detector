@@ -26,8 +26,8 @@
   <widget class="QPushButton" name="BtBorra">
    <property name="geometry">
     <rect>
-     <x>560</x>
-     <y>140</y>
+     <x>250</x>
+     <y>60</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -71,7 +71,7 @@
     <rect>
      <x>520</x>
      <y>70</y>
-     <width>101</width>
+     <width>111</width>
      <height>51</height>
     </rect>
    </property>
@@ -236,6 +236,15 @@
         </color>
        </brush>
       </colorrole>
+      <colorrole role="PlaceholderText">
+       <brush brushstyle="NoBrush">
+        <color alpha="128">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
      </active>
      <inactive>
       <colorrole role="WindowText">
@@ -367,6 +376,15 @@
       <colorrole role="ToolTipText">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
+      <colorrole role="PlaceholderText">
+       <brush brushstyle="NoBrush">
+        <color alpha="128">
          <red>0</red>
          <green>0</green>
          <blue>0</blue>
@@ -510,6 +528,15 @@
         </color>
        </brush>
       </colorrole>
+      <colorrole role="PlaceholderText">
+       <brush brushstyle="NoBrush">
+        <color alpha="128">
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </brush>
+      </colorrole>
      </disabled>
     </palette>
    </property>
@@ -541,8 +568,8 @@
   <widget class="QPushButton" name="Video">
    <property name="geometry">
     <rect>
-     <x>520</x>
-     <y>200</y>
+     <x>340</x>
+     <y>70</y>
      <width>101</width>
      <height>51</height>
     </rect>
@@ -564,8 +591,8 @@
   <widget class="QSpinBox" name="min">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>210</y>
+     <x>440</x>
+     <y>80</y>
      <width>48</width>
      <height>24</height>
     </rect>
@@ -579,6 +606,48 @@
    <property name="singleStep">
     <number>5</number>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="grupvalors">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>140</y>
+     <width>111</width>
+     <height>125</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_5">
+    <item>
+     <widget class="QRadioButton" name="image1">
+      <property name="text">
+       <string>Image 1</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="image2">
+      <property name="text">
+       <string>Image 2</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="image3">
+      <property name="text">
+       <string>image 3</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

@@ -193,24 +193,25 @@ class MiCalculadora(QWidget, form_class):
         self.listWidget.clear()
         c.clear()
         if self.image1.isChecked():
-            self.input_image = 'mejor_captura10.png'
-
+            input_image = 'mejor_captura10.png'
+            return input_image
         if self.image2.isChecked():
-            self.input_image = 'mejor_captura10.png'
-
+            input_image = 'mejor_captura10.png'
+            return input_image
         if self.image3.isChecked():
-            self.input_image = 'QRcomida.jpg'
+            input_image = 'QRcomida.jpg'
+            return input_image
 
     def image(self):
 
         self.listWidget.clear()
-        valor = c
+        valor = self.imageinput()
         self.pantalla.setPlainText(str(valor))
 
 
         new_array = []
 
-        m = captura('mejor_captura10.png')
+        m = captura(self.imageinput())
         m.IP_Camera()
         #c=['Chorizo', 'Fuet', 'Jamon', 'Queso', 'Butifarra']
         for string in c:
