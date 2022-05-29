@@ -1,7 +1,6 @@
 
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget,QApplication
 # Cargar nuestro formulario *.ui
 formulario = 'interficieQT.ui'
 form_class = uic.loadUiType(formulario)[0]
@@ -15,6 +14,11 @@ from pandas import array
 from pyzbar import pyzbar
 import argparse
 import cv2
+from PyQt5.QtWidgets import * 
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtGui import * 
+from PyQt5.QtCore import *
+import sys
 
 
 # He creat una classe IMAGE o CAPTURA on fem tot el que NO sigui treballar amb QR sols sino amb
@@ -136,43 +140,55 @@ class VIDEO:
         """
        # >>>
         """
-        self.path = path
+        pass
 
     def procesadoV(self):
         """def antes video -> ahora procesadoV"""
-        ret, frame = self.path.read()
+        ret, frame = self.read()
         #la escritura se tiene que hacer con esta estructura de try y with, s'ha de repassar i mirar que no ho haguem de fer en un altre lloc
         try:
-            with tempfile.NamedTemporaryFile(suffix=".jpg", prefix="./frame_", delete=True) as file:
-                cv2.imwrite(file.name, frame)
-                ret = captura.detect(file.name, frame)
-                captura.show('frame', frame)
-                if len(ret) >= 1:
-                    for i in ret:
-                        if i not in c:
-                            c.append(i)
-                        else:
-                            pass
+            
+            ret, frame = self.read()
+            file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
+            cv2.imwrite(file.name, frame)
+            ret = captura.detect(file.name, frame)
+            captura.show('frame',frame)
+            if len(ret)>=1:
+                for i in ret:
+                    if i not in c:
+                        c.append(i)
+                        
+                        pass
+                    else:
+                        pass
+
+            
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                return
 
         except Exception as e:
             print(e)
-        return c
 
 
 # ----------INTERFAZ-----------------------
 class MiCalculadora(QWidget, form_class):
     def __init__(self, parent=None):
+        import time
         QWidget.__init__(self, parent)
         self.setupUi(self)
         self.res = ''
         self.c=[]
+        self.not_repeated=[]
+        
+       
     # Implementacion de los Slots referenciados en QDesigner
 
     def borratodo(self):
-        self.c=[]
+        c.clear()
         self.listWidget.clear()
         self.res = ''
         self.pantalla.setPlainText(self.res)
+  
     def imageinput(self):
         self.listWidget.clear()
         c.clear()
@@ -194,15 +210,31 @@ class MiCalculadora(QWidget, form_class):
 
         new_array = []
 
-        m = captura(self.input_image)
+        m = captura('mejor_captura10.png')
         m.IP_Camera()
         #c=['Chorizo', 'Fuet', 'Jamon', 'Queso', 'Butifarra']
         for string in c:
             self.listWidget.insertItem(0, string)
         self.res = ''
 
-    def video(self):
-        self.listWidget.clear()
+    def evalua(self):
+        value = self.min.value()
+        timeout = time.time() + value   # 20 seconds
+        not_repeated = []
+        while True:
+            if time.time()<timeout:
+                ret = VIDEO.procesadoV(cv2.VideoCapture(0))
+                for string in c:
+                    if string not in not_repeated:
+                        self.listWidget.insertItem(0, string)
+                        not_repeated.append(string)
+                self.res = ''
+            else:
+                cv2.destroyAllWindows()
+                break
+    
+    
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
