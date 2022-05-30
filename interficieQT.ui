@@ -659,8 +659,8 @@
    <slot>borratodo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>587</x>
-     <y>166</y>
+     <x>277</x>
+     <y>86</y>
     </hint>
     <hint type="destinationlabel">
      <x>10</x>
@@ -691,8 +691,8 @@
    <slot>evalua()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>570</x>
-     <y>225</y>
+     <x>390</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>480</x>
