@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>961</width>
-    <height>619</height>
+    <width>1512</width>
+    <height>945</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,7 +94,7 @@
     <rect>
      <x>700</x>
      <y>100</y>
-     <width>161</width>
+     <width>371</width>
      <height>351</height>
     </rect>
    </property>
@@ -230,15 +230,6 @@
       <colorrole role="ToolTipText">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="PlaceholderText">
-       <brush brushstyle="NoBrush">
-        <color alpha="128">
          <red>0</red>
          <green>0</green>
          <blue>0</blue>
@@ -382,15 +373,6 @@
         </color>
        </brush>
       </colorrole>
-      <colorrole role="PlaceholderText">
-       <brush brushstyle="NoBrush">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
      </inactive>
      <disabled>
       <colorrole role="WindowText">
@@ -522,15 +504,6 @@
       <colorrole role="ToolTipText">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="PlaceholderText">
-       <brush brushstyle="NoBrush">
-        <color alpha="128">
          <red>0</red>
          <green>0</green>
          <blue>0</blue>
