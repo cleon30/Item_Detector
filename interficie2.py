@@ -1,4 +1,3 @@
-
 import sys
 from PyQt5 import uic
 # Cargar nuestro formulario *.ui
