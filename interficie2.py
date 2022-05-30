@@ -219,6 +219,8 @@ class MiCalculadora(QWidget, form_class):
         self.res = ''
 
     def evalua(self):
+        c.clear()
+        self.listWidget.clear()
         value = self.min.value()
         timeout = time.time() + value   # 20 seconds
         not_repeated = []
