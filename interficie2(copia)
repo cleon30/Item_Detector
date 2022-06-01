@@ -190,10 +190,11 @@ class MiCalculadora(QWidget, form_class):
         self.pantalla.setPlainText(self.res)
 
     def imageinput(self):
+        """Seleccionar que imagen analizar"""
         self.listWidget.clear()
         c.clear()
         if self.image1.isChecked():
-            input_image = 'mejor_captura10.png'
+            input_image = 'DNIA.jpg'
             return input_image
         if self.image2.isChecked():
             input_image = 'mejor_captura10.png'
@@ -203,23 +204,43 @@ class MiCalculadora(QWidget, form_class):
             return input_image
 
     def image(self):
-
+        """boton de analizar imagen seleccionada"""
         self.listWidget.clear()
-        valor = self.imageinput()
-        self.pantalla.setPlainText(str(valor))
-        #printea el file de la img seleccionada a valor
+        img = self.imageinput()
 
+        #printea el file de la img seleccionada a valor
+        self.pantalla.setPlainText(str(img))
         new_array = []
-        #self.label.pixmap(valor)
+
+        #Pone la imagen del valor en la etiqueta/pantalla
+        im = QPixmap(img)
+        self.label.setPixmap(im)
+
+
+        #executa l'analisi de la imatge
 
         m = captura(self.imageinput())
         m.IP_Camera()
-        #c=['Chorizo', 'Fuet', 'Jamon', 'Queso', 'Butifarra']
+
+        #Enciende alarma si hay algo en c (osea detecta algun cajon vacio)
+        if len(c)>0:
+            # Enciende la alarma
+            self.alarm.setStyleSheet("background-color: red;");
+        else:
+
+            #Apaga alarma
+            self.alarm.setStyleSheet("background-color: white;");
+
+
+        #Añadir a la lista de la derecha de la pantalla lo que haya en c
         for string in c:
             self.listWidget.insertItem(0, string)
         self.res = ''
 
     def evalua(self):
+        """boton de analizar video"""
+        c.clear()
+        self.listWidget.clear()
         value = self.min.value()
         timeout = time.time() + value   # 20 seconds
         not_repeated = []
