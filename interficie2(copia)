@@ -67,7 +67,7 @@ class captura:
         for (classid, score, box) in zip(classes, scores, boxes):
             label = "%s : %f" % (class_names[classid], score)
             cv.rectangle(frame, box, COLOR_BLUE, 2)
-            # cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2)
+            cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2)
             x, y, w, h = box
             ROI = frame[y:y + h, x:x + w]
             print()
