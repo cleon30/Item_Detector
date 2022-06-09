@@ -206,9 +206,10 @@ class MiCalculadora(QWidget, form_class):
         self.listWidget.clear()
         valor = self.imageinput()
         self.pantalla.setPlainText(str(valor))
-
+        #printea el file de la img seleccionada a valor
 
         new_array = []
+        #self.label.pixmap(valor)
 
         m = captura(self.imageinput())
         m.IP_Camera()
