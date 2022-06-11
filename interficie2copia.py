@@ -1,10 +1,9 @@
-
 import sys
 from PyQt5 import uic
 # Cargar nuestro formulario *.ui
 formulario = 'interficieQT.ui'
 form_class = uic.loadUiType(formulario)[0]
-#from this import d
+#from this import
 from operator import truediv
 import cv2 as cv
 import numpy as np
@@ -19,17 +18,11 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
-
-
-# He creat una classe IMAGE o CAPTURA on fem tot el que NO sigui treballar amb QR sols sino amb
-# la captura dels supers i despres una classe a part que es digui QR que tingui la funció decode que decodifica els QR
-# esta afegit el main on ha d'estar el programa principal
-#he borrat el tempfiles aparentment innecesari per a la def detect
-
+from PyQt5.QtWidgets import (QApplication, QDialog,
+        QFileDialog, QInputDialog, QMessageBox)
 
 class captura:
-    """ crec que hauriem de posarli IMAGE o CPTURA de nombre i totes les def han de tenir noms mes clars i sempre utilitzar self """
-
+    """ Clase captura, trata con imagenes de una camara y se le debe proporcionar el path de la captura """
 
     def __init__(self, path):
         self.path = path
@@ -43,7 +36,7 @@ class captura:
         return cv.imread(self)
 
     def detect(self, frame):
-        """detecta codigos QR  de una imagen con muchos QRs y devuelve un array de sus codigos decodificados"""
+        """detecta y localiza codigos QR de una imagen con muchos QRs mediante Inteligencia Artificial y devuelve un array de sus codigos decodificados"""
         width = 640
         height = 640
         if frame.shape[1] > 1024 or frame.shape[0] > 1024:
@@ -85,8 +78,8 @@ class captura:
 
     # frame = cv.imread('test03.jpg')
     # detect('test03.jpg', frame)
-    def IP_Camera(self):
-        """procesa la captura y devuelve una lista de los productos detectados """
+    def procesaI(self):
+        """procesa la captura y devuelve una lista de los productos que faltan detectados """
 
         frame = captura.read(self.path)
         datos = captura.detect(self.path, frame)
@@ -108,7 +101,6 @@ class QR:
         self.path = path
     def decode(self, dictionary, array):
         """ Decodifica codigos QR proporcionado un diccionario(creo que lo del diccionario de momento no se usa o el array?) y el array"""
-        #he canviat image per self y el nom de la funcio de decode a decoder
         barcodes = pyzbar.decode(self)
         for barcode in barcodes:
             # The location of the bounding box from which the barcode is extracted
@@ -131,19 +123,18 @@ class QR:
         return
 
         # Show output image
-#NO tinc molt clar si podriem definir una classe nomes pel video que es digui VIDEO i la funcio processadoV
+
 #Li he canviat els noms ja, pero s'ha d'arreglar perque funcioni que aixo ho saps millor tu.( s'ha de deixar lo de try with)
 class VIDEO:
     """ Clase video """
-#clase antes MODO -> ahora VIDEO
     def __init__(self, path):
         """
        # >>>
         """
         pass
 
-    def procesadoV(self):
-        """def antes video -> ahora procesadoV"""
+    def procesaV(self):
+        """procesa el video y devuelve una lista de los productos que faltan detectados"""
         ret, frame = self.read()
         #la escritura se tiene que hacer con esta estructura de try y with, s'ha de repassar i mirar que no ho haguem de fer en un altre lloc
         try:
@@ -169,9 +160,18 @@ class VIDEO:
         except Exception as e:
             print(e)
 
-
-# ----------INTERFAZ-----------------------
-class MiCalculadora(QWidget, form_class):
+#---------------------------------------------------------------------------
+# -------------------------INTERFAZ-----------------------------------------
+#---------------------------------------------------------------------------
+class Aplicacion(QWidget, form_class):
+    MESSAGE = """EN:\n  This app will detect empty slots from supermarket display racks\n
+    IMAGE MODE: select one of the 3 images and click IMAGE button to process it\n
+    VIDEO MODE: select the recording time and click VIDEO button, camera will open and process live\n
+    The detected empty slots will appear in the right side of the screen, as well as an alarm\n
+    ESP:\n Esta aplicación detecta cajones vacíos de las estanterías de supermercado\n
+    MODO IMAGEN: selecciona una de las 3 imágenes y clica el botón IMAGE para procesarla\n
+    MODO VIDEO : selecciona el tiempo de grabación y clica el botón VIDEO, la cámara se abrira y procesará la grabación \n
+    Los cajones vacíos detectados aparecerán a la derecha de la pantalla, una alarma se enciende si hay cajones vacíos\n"""
     def __init__(self, parent=None):
         import time
         QWidget.__init__(self, parent)
@@ -184,6 +184,7 @@ class MiCalculadora(QWidget, form_class):
     # Implementacion de los Slots referenciados en QDesigner
 
     def borratodo(self):
+        """eliminar informacion del display y de la lista de cajones vacios (reset)"""
         c.clear()
         self.listWidget.clear()
         self.res = ''
@@ -220,7 +221,10 @@ class MiCalculadora(QWidget, form_class):
         #executa l'analisi de la imatge
 
         m = captura(self.imageinput())
-        m.IP_Camera()
+        m.procesaI()
+
+        #printea el numero de cajones vacios
+        self.pantalla_2.setPlainText(str(len(c)))
 
         #Enciende alarma si hay algo en c (osea detecta algun cajon vacio)
         if len(c)>0:
@@ -246,7 +250,7 @@ class MiCalculadora(QWidget, form_class):
         not_repeated = []
         while True:
             if time.time()<timeout:
-                ret = VIDEO.procesadoV(cv2.VideoCapture(0))
+                ret = VIDEO.procesaV(cv2.VideoCapture(0))
                 for string in c:
                     if string not in not_repeated:
                         self.listWidget.insertItem(0, string)
@@ -255,13 +259,15 @@ class MiCalculadora(QWidget, form_class):
             else:
                 cv2.destroyAllWindows()
                 break
-
+    def help(self):
+        """Muestra el mensaje de ayuda"""
+        QMessageBox.information(self,'Help',self.MESSAGE)
 
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    MyWindow = MiCalculadora(None)
+    MyWindow = Aplicacion(None)
     MyWindow.show()
     #---
     c = []
