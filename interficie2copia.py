@@ -85,9 +85,14 @@ class captura:
         datos = captura.detect(self.path, frame)
         print(datos)
         cv2.destroyAllWindows()
+
+        #lista de productos, si lee un QR que no correspone a un producto no lo añade
+        products = ["Chorizo", "Fuet", "mini Frankfurts", "Jamon en dulce", "Jamon", "Chistorra", "Butifarra", "Pavo",
+                    "Queso", "Sobrassada mallorquina", "Sobrasada"]
+
         if len(datos) >= 1:
             for i in datos:
-                if i not in c:
+                if i not in c and i in products:
                     c.append(i)
 
                     pass
@@ -144,9 +149,13 @@ class VIDEO:
             cv2.imwrite(file.name, frame)
             ret = captura.detect(file.name, frame)
             captura.show('frame',frame)
+
+            # lista de productos, si lee un QR que no correspone a un producto no lo añade
+            products = ["Chorizo", "Fuet", "mini Frankfurts", "Jamon en dulce", "Jamon", "Chistorra","Butifarra","Pavo","Queso","Sobrassada mallorquina","Sobrasada"]
+
             if len(ret)>=1:
                 for i in ret:
-                    if i not in c:
+                    if i not in c and i in products:
                         c.append(i)
 
                         pass
@@ -164,7 +173,7 @@ class VIDEO:
 # -------------------------INTERFAZ-----------------------------------------
 #---------------------------------------------------------------------------
 class Aplicacion(QWidget, form_class):
-    MESSAGE = """EN:\n  This app will detect empty slots from supermarket display racks\n
+    MESSAGE = """  EN:\n  This app will detect empty slots from supermarket display racks\n
     IMAGE MODE: select one of the 3 images and click IMAGE button to process it\n
     VIDEO MODE: select the recording time and click VIDEO button, camera will open and process live\n
     The detected empty slots will appear in the right side of the screen, as well as an alarm\n
@@ -195,7 +204,7 @@ class Aplicacion(QWidget, form_class):
         self.listWidget.clear()
         c.clear()
         if self.image1.isChecked():
-            input_image = '4vacios.jpg'
+            input_image = '6vacios.jpg'
             return input_image
         if self.image2.isChecked():
             input_image = '0vacios.jpg'
