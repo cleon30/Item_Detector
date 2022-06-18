@@ -174,13 +174,14 @@ class VIDEO:
 #---------------------------------------------------------------------------
 class Aplicacion(QWidget, form_class):
     MESSAGE = """  EN:\n  This app will detect empty slots from supermarket display racks\n
-    IMAGE MODE: select one of the 3 images and click IMAGE button to process it\n
+    IMAGE MODE: select one of the 3 images or file and click IMAGE button to process it\n
     VIDEO MODE: select the recording time and click VIDEO button, camera will open and process live\n
     The detected empty slots will appear in the right side of the screen, as well as an alarm\n
     ESP:\n Esta aplicación detecta cajones vacíos de las estanterías de supermercado\n
-    MODO IMAGEN: selecciona una de las 3 imágenes y clica el botón IMAGE para procesarla\n
+    MODO IMAGEN: selecciona una de las 3 imágenes o archivo y clica el botón IMAGE para procesarla\n
     MODO VIDEO : selecciona el tiempo de grabación y clica el botón VIDEO, la cámara se abrira y procesará la grabación \n
     Los cajones vacíos detectados aparecerán a la derecha de la pantalla, una alarma se enciende si hay cajones vacíos\n"""
+    MESSAGES ="""Select image type file"""
     def __init__(self, parent=None):
         import time
         QWidget.__init__(self, parent)
@@ -207,49 +208,60 @@ class Aplicacion(QWidget, form_class):
             input_image = '6vacios.jpg'
             return input_image
         if self.image2.isChecked():
-            input_image = '0vacios.jpg'
+            input_image = '4vacios.jpg'
             return input_image
         if self.image3.isChecked():
-            input_image = '6vacios.jpg'
+            input_image = '0vacios.jpg'
+            return input_image
+        if self.selectfile.isChecked():
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getOpenFileName(self,
+                                                      "seleccionar Archivo", '',
+                                                      "All Files (*);;Text Files (*.txt)", options=options)
+            input_image = fileName
             return input_image
 
+
     def image(self):
-        """boton de analizar imagen seleccionada"""
-        self.listWidget.clear()
-        img = self.imageinput()
+        try:
+            """boton de analizar imagen seleccionada"""
+            self.listWidget.clear()
+            img = self.imageinput()
 
-        #printea el file de la img seleccionada a valor
-        self.pantalla.setPlainText(str(img))
-        new_array = []
+            #printea el file de la img seleccionada a valor
+            self.pantalla.setPlainText(str(img))
+            new_array = []
 
-        #Pone la imagen del valor en la etiqueta/pantalla
-        im = QPixmap(img)
-        self.label.setPixmap(im)
-
-
-        #executa l'analisi de la imatge
-
-        m = captura(self.imageinput())
-        m.procesaI()
-
-        #printea el numero de cajones vacios
-        self.pantalla_2.setPlainText(str(len(c)))
-
-        #Enciende alarma si hay algo en c (osea detecta algun cajon vacio)
-        if len(c)>0:
-            # Enciende la alarma
-            self.alarm.setStyleSheet("background-color: red;");
-        else:
-
-            #Apaga alarma
-            self.alarm.setStyleSheet("background-color: white;");
+            #Pone la imagen del valor en la etiqueta/pantalla
+            im = QPixmap(img)
+            self.label.setPixmap(im)
 
 
-        #Añadir a la lista de la derecha de la pantalla lo que haya en c
-        for string in c:
-            self.listWidget.insertItem(0, string)
-        self.res = ''
+            #executa l'analisi de la imatge
 
+            m = captura(img)
+            m.procesaI()
+
+            #printea el numero de cajones vacios
+            self.pantalla_2.setPlainText(str(len(c)))
+
+            #Enciende alarma si hay algo en c (osea detecta algun cajon vacio)
+            if len(c)>0:
+                # Enciende la alarma
+                self.alarm.setStyleSheet("background-color: red;");
+            else:
+
+                #Apaga alarma
+                self.alarm.setStyleSheet("background-color: white;");
+
+
+            #Añadir a la lista de la derecha de la pantalla lo que haya en c
+            for string in c:
+                self.listWidget.insertItem(0, string)
+            self.res = ''
+        except Exception as e:
+            QMessageBox.information(self, 'Help', self.MESSAGES)
+            print(e)
     def evalua(self):
         """boton de analizar video"""
         c.clear()
