@@ -761,7 +761,7 @@
     <item>
      <widget class="QRadioButton" name="image3">
       <property name="text">
-       <string>image 3</string>
+       <string>Image 3</string>
       </property>
      </widget>
     </item>
@@ -783,9 +783,9 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>20</x>
      <y>140</y>
-     <width>1031</width>
+     <width>1041</width>
      <height>611</height>
     </rect>
    </property>
@@ -808,7 +808,7 @@
      <x>540</x>
      <y>10</y>
      <width>20</width>
-     <height>101</height>
+     <height>111</height>
     </rect>
    </property>
    <property name="orientation">
@@ -821,7 +821,7 @@
      <x>270</x>
      <y>10</y>
      <width>20</width>
-     <height>101</height>
+     <height>111</height>
     </rect>
    </property>
    <property name="orientation">
@@ -881,7 +881,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Nº cajones vacios:</string>
+    <string>Nº cajones vacíos:</string>
    </property>
   </widget>
   <widget class="Line" name="line_3">
@@ -890,7 +890,7 @@
      <x>760</x>
      <y>10</y>
      <width>20</width>
-     <height>101</height>
+     <height>111</height>
     </rect>
    </property>
    <property name="orientation">
@@ -974,22 +974,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>Video</sender>
-   <signal>clicked()</signal>
-   <receiver>Aplicacion</receiver>
-   <slot>evalua()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>570</x>
-     <y>90</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>480</x>
-     <y>309</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>helpbutton</sender>
    <signal>clicked()</signal>
    <receiver>Aplicacion</receiver>
@@ -1005,6 +989,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>Video</sender>
+   <signal>clicked()</signal>
+   <receiver>Aplicacion</receiver>
+   <slot>video()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>610</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>btpulsado()</slot>
@@ -1015,5 +1015,6 @@
   <slot>slot1()</slot>
   <slot>help()</slot>
   <slot>abrir()</slot>
+  <slot>video()</slot>
  </slots>
 </ui>

@@ -228,7 +228,7 @@ class Aplicacion(QWidget, form_class):
             self.listWidget.clear()
             img = self.imageinput()
 
-            #printea el file de la img seleccionada a valor
+            #printea el file de la img seleccionada a valor display
             self.pantalla.setPlainText(str(img))
             new_array = []
 
@@ -262,10 +262,18 @@ class Aplicacion(QWidget, form_class):
         except Exception as e:
             QMessageBox.information(self, 'Help', self.MESSAGES)
             print(e)
-    def evalua(self):
+    def video(self):
         """boton de analizar video"""
+        #borra la lista anterior de productos detectados para actualizarla
         c.clear()
         self.listWidget.clear()
+        # poner en el display de informacion que se ha capturado el video
+        self.pantalla.setPlainText(str("captura de video"))
+        self.label.clear()
+
+        im = QPixmap('fondograbacon.png')
+        self.label.setPixmap(im)
+
         value = self.min.value()
         timeout = time.time() + value   # 20 seconds
         not_repeated = []
