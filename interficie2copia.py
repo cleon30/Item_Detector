@@ -46,17 +46,20 @@ class captura:
         elapsed_ms = time.time() - start_time
         dictionary = {}
         array = []
-        cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (40, 40), cv.FONT_HERSHEY_SIMPLEX, 1,
-                   COLOR_RED, 2)
+     
+        cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (240, 340), cv.FONT_HERSHEY_SIMPLEX, 5,
+                   COLOR_RED, 20)
         class_names = open('data/obj.names').read().strip().split('\n')
         for (classid, score, box) in zip(classes, scores, boxes):
             label = "%s : %f" % (class_names[classid], score)
-            cv.rectangle(frame, box, COLOR_BLUE, 2)
+            cv.rectangle(frame, box, COLOR_BLUE, 10)
             cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2)
             x, y, w, h = box
             ROI = frame[y:y + h, x:x + w]
+            
             print()
-            QR.decode(ROI, dictionary, array)
+            QR.decode(ROI, dictionary, array, frame, x, y)
+        cv2.imwrite('image.jpg', frame)
         return array
 
     net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights')
@@ -68,6 +71,7 @@ class captura:
 
         frame = captura.read(self.path)
         datos = captura.detect(self.path, frame)
+        
         print(datos)
         cv2.destroyAllWindows()
 
@@ -89,14 +93,14 @@ class QR:
     """Esta clase trabaja con QR se define con el path de la imagen de un QR"""
     def __init__(self, path):
         self.path = path
-    def decode(self, dictionary, array):
+    def decode(self, dictionary, array, frame, x_old, y_old):
         """ Decodifica codigos QR proporcionado un diccionario y el array"""
         barcodes = pyzbar.decode(self)
         for barcode in barcodes:
             # The location of the bounding box from which the barcode is extracted
             # Draw the bounding box of the barcode in the image
             (x, y, w, h) = barcode.rect
-            cv2.rectangle(self, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            cv2.rectangle(self, (x, y), (x + w, y + h), (0, 0, 255), 5)
 
             # The barcode data is a byte object, so if we want to print it on the output image
             # To draw it, you need to convert it into a string first
@@ -104,10 +108,11 @@ class QR:
             barcodeType = barcode.type
 
             # Draw the barcode data and barcode type on the image
-            text = "{} ({})".format(barcodeData, barcodeType)
-            cv2.putText(self, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX,
-                        0.5, (0, 0, 255), 2)
+            text = "{}".format(barcodeData)
+            cv2.putText(frame, text, (x_old , y_old), cv2.FONT_HERSHEY_SIMPLEX,
+                        2, (0, 0, 255), 7)
             #se añaden los textos decodificados a un array
+            
             array.append(barcodeData)
 
         return
@@ -222,11 +227,12 @@ class Aplicacion(QWidget, form_class):
             m.procesaI()
 
             # Printea el file de la img seleccionada a valor display
-            self.pantalla.setPlainText(str(img))
+            #self.pantalla.setPlainText(str(img))
+            self.pantalla.setPlainText('image.jpg')
             new_array = []
 
             # Pone la imagen del valor en la etiqueta/pantalla de la aplicacion
-            im = QPixmap(img)
+            im = QPixmap('image.jpg')
             self.label.setPixmap(im)
 
             # printea el numero de cajones vacios
