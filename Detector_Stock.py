@@ -1,5 +1,5 @@
 ############################################################
-# Se importan librerias 
+# Se importan librerias 📚📚📚📚📚📚
 import sys
 from PyQt5 import uic # Librerias PyQt5 para el diseño de la aplicación 
 #Cargar nuestro formulario *.ui
@@ -15,8 +15,8 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QMessageBox)
 ####################################################################
 ####################################################################
-class captura:
-    """ Clase captura, trata con imagenes de una camara de su establecimiento """
+class captura: 
+    """ Clase captura, trata con imagenes de una camara de su establecimiento 📸 📸 📸"""
 
     def __init__(self, path):
         self.path = path
@@ -49,7 +49,7 @@ class captura:
         
         array = [] # Array donde se iran colocando los alimentos encontrados
      
-        cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (240, 340), cv.FONT_HERSHEY_SIMPLEX, 5,
+        cv.putText(frame, '%.2f s, Qr found : %d' % (elapsed_ms, len(classes)), (240, 340), cv.FONT_HERSHEY_SIMPLEX, 5,
                    COLOR_RED, 20)                                       # Texto donde se añadira a la imagen para indicar el numeor de QR detectados
         class_names = open('data/obj.names').read().strip().split('\n') # QR_CODE de la base de datos Pre Entrenada
         for (classid, score, box) in zip(classes, scores, boxes):       # Se analizara individualmente cada elemento detectado
@@ -126,19 +126,22 @@ class VIDEO:
 
     def procesaV(self):
         """procesa el video y devuelve una lista de los productos que faltan detectados"""
-        ret, frame = self.read()
-
+        ret, frame = self.read() 
+        # -----------------------Aviso-------------------------------
+        # Este programa se ha realizado para MacOS, y por ello se ha optado por manipular los drivers de la salida de video, con una aplicacion de terceros llamada EpocCam Pro 
+        # Aprovechando la buena compatibilidad de IPhone con Mac
+        # Si tienes Android/Linux te recomiendo usar Localhost de manera normal en vez de manipular salida o utilizar un sistema similar para conectar ambos dispositivos
         try:
+            # ---------- Un video no es nada mas que un conjunto de frames por segundo, lo equivalente a muchas imagenes seguidas-----------
+            ret, frame = self.read() # Lectura del video
+            file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True) # Cada frame sera una imagen temporal la cual sera analizada
+            cv.imwrite(file.name, frame) #Creacion de imagen para poder tratarla
+            ret = captura.detect(file.name, frame) # Detection + Decodificacion de frame
+            captura.show('frame',frame) # Muestra el video en tiempo real debido a que se ejecuta en bucle
 
-            ret, frame = self.read()
-            file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
-            cv.imwrite(file.name, frame)
-            ret = captura.detect(file.name, frame)
-            captura.show('frame',frame)
-
-            # lista de productos, si lee un QR que no correspone a un producto no lo añade
+            # Lista de productos, si lee un QR que no correspone a un producto no lo añade
             products = ["Chorizo", "Fuet", "mini Frankfurts", "Jamon en dulce", "Jamon", "Chistorra","Butifarra","Pavo","Queso","Sobrassada mallorquina","Sobrasada"]
-
+            # Nos aseguramos que no se repitan productos y que pertenezcan a nuestros productos
             if len(ret)>=1:
                 for i in ret:
                     if i not in c and i in products:
@@ -148,11 +151,11 @@ class VIDEO:
                     else:
                         pass
 
-
+            # Se espera 1 ms 
             if cv.waitKey(1) & 0xFF == ord('q'):
                 return
 
-        except Exception as e:
+        except Exception as e:  # Si hay una excepcion, muestra cual es 🤔
             print(e)
 
 #---------------------------------------------------------------------------
