@@ -22,3 +22,6 @@ Sientete libre de realizar fork o mejorar el proyecto actual :)
 
 
 <img width="1295" alt="Captura de Pantalla 2022-07-02 a las 4 44 27" src="https://user-images.githubusercontent.com/62452212/176983835-da43187d-02b1-4d92-a565-43c82f5e87b2.png">
+
+
+Proyecto realizado por Sergi Saperas y Carlos Martin 
