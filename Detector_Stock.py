@@ -162,20 +162,20 @@ class VIDEO:
 # -------------------------INTERFAZ-----------------------------------------
 #---------------------------------------------------------------------------
 class Aplicacion(QWidget, form_class):
-    """clase aplicacion interficie pyqt5 qt Designer"""
+    """Clase aplicacion interficie PyQt5 Designer"""
 
     # Mensaje del boton de ayuda/help de la aplicacion
-    MESSAGE = """  EN:\n  This app will detect empty slots from supermarket display racks\n
-    IMAGE MODE: select one of the 3 images or file and click IMAGE button to process it\n
-    VIDEO MODE: select the recording time and click VIDEO button, camera will open and process live\n
-    The detected empty slots will appear in the right side of the screen, as well as an alarm\n
-    ESP:\n Esta aplicación detecta cajones vacíos de las estanterías de supermercado\n
-    MODO IMAGEN: selecciona una de las 3 imágenes o archivo y clica el botón IMAGE para procesarla\n
-    MODO VIDEO : selecciona el tiempo de grabación y clica el botón VIDEO, la cámara se abrira y procesará la grabación \n
-    Los cajones vacíos detectados aparecerán a la derecha de la pantalla, una alarma se enciende si hay cajones vacíos\n"""
+    MESSAGE = """  EN:\n  This app will detect empty slots from supermarket display racks \n
+    IMAGE MODE: select one of the 3 images 🏞 or file 📁 and click IMAGE button to process it \n
+    VIDEO MODE: select the recording time and click VIDEO button 🎥, camera will open and process live \n
+    The detected empty slots will appear in the right side of the screen, as well as an alarm 🚨 \n
+    ESP:\n Esta aplicación detecta cajones vacíos de las estanterías de supermercado \n
+    MODO IMAGEN: selecciona una de las 3 imágenes 🏞 o archivo 📁 y clica el botón IMAGE para procesarla \n
+    MODO VIDEO : selecciona el tiempo de grabación y clica el botón VIDEO 🎥, la cámara se abrira y procesará la grabación \n
+    Los cajones vacíos detectados aparecerán a la derecha de la pantalla, una alarma se enciende si hay cajones vacíos 🚨 \n"""
 
     # Mensaje de error si se intenta analizar un archivo que no es una imagen (no valido)
-    MESSAGES ="""Select image type file"""
+    MESSAGES ="""Select image 🏞 type file"""
 
     def __init__(self, parent=None):
         import time
