@@ -4,9 +4,9 @@
 Para inicializar el proyecto, clona este repositorio y sigue las siguientes instrucciones:
 ## Instalación de Librerias :
 ```bash
-pip3 install opencv-python;
-pip3 install pyzbar;
-pip3 install PyQt5;
+pip3 install opencv-python
+pip3 install pyzbar
+pip3 install PyQt5
 pip3 install tempfile
 ```
 ## Instalación de aplicación en dispositivo Movil
