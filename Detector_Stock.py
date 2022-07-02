@@ -272,22 +272,22 @@ class Aplicacion(QWidget, form_class):
         self.label.setPixmap(im)
 
         value = self.min.value()
-        timeout = time.time() + value   # 20 seconds
-        not_repeated = []
-        while True:
-            if time.time()<timeout:
-                ret = VIDEO.procesaV(cv.VideoCapture(0))
+        timeout = time.time() + value   # Value vendra dado por el valor seleccionado en la interfaz
+        not_repeated = []               # De este modo, el bucle While True vendra dado por un temporizador del tiempo deseado
+        while True:                     # Bucle limitado por temporizador
+            if time.time()<timeout:     
+                ret = VIDEO.procesaV(cv.VideoCapture(0))    #Ejecución de Video
                 for string in c:
                     if string not in not_repeated:
-                        self.listWidget.insertItem(0, string)
+                        self.listWidget.insertItem(0, string)   #Agregar a la lista si no esta repetido
                         not_repeated.append(string)
                 self.res = ''
             else:
-                cv.destroyAllWindows()
-                break
+                cv.destroyAllWindows()   # Cierre inmediato de pestaña de OpenCV
+                break                    # Salida del bucle 
     def help(self):
         """Muestra el mensaje de ayuda de la aplicacion"""
-        QMessageBox.information(self,'Help',self.MESSAGE)
+        QMessageBox.information(self,'Help',self.MESSAGE)   # Interfaz de Soporte🤖
 
 
 
