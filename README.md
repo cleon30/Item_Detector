@@ -2,7 +2,7 @@
 
 ### **Welcome 👾👾👾**
 Para inicializar el proyecto, clona este repositorio y sigue las siguientes instrucciones:
-    - Instalación de Librerias :
+    ## - Instalación de Librerias :
     ```bash
       pip3 install opencv-python;
       pip3 install pyzbar;
@@ -10,18 +10,12 @@ Para inicializar el proyecto, clona este repositorio y sigue las siguientes inst
       pip3 install tempfile
     ```
 
-The first part will be the Solana Smart Contract that you will see It inside the Smart-Contract directory
+    ## Instalación de aplicación en dispositivo Movil
+    Probablemente esta sea la parte más complicada del set up, pero basicamente debes instalar una aplicación de terceros 
+    para comunicar el Movil con el Ordenador. En nuestro caso hemos utilizado MacOS con iOS a través de la aplicación EpocCam Pro.
+    
+    ## Ejecución del programa Python3 
+    
+    Simplemente debes introducir la instrucción `python3 Detector_Stock.py`en la terminal
 
-As you probabably know: `anchor build` , `anchor deploy` & `anchor run test`
-Always making sure you are on devnet, if not change the Anchor.toml documents.
-
-Then we have the Javascript part and were you are going to run the Chess game so:
-`cd improved-react-chess`
-`npm install`
-`yarn add ts-mocha`
-
-`npm run start` 
-
-If you want to fork it or colaborate on something you're welcome :)
-
-This project has been the 2nd winner of the Solana Track at Encode Club x ATX DAO hackathon in the University of Texas Austin :)
+Sientete libre de realizar fork o mejorar el proyecto actual :) 
