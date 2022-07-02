@@ -2,7 +2,7 @@
 
 ### **Welcome 👾👾👾**
 Para inicializar el proyecto, clona este repositorio y sigue las siguientes instrucciones:
-    ## Instalación de Librerias :
+## Instalación de Librerias :
     ```
         pip3 install opencv-python;
         pip3 install pyzbar;
