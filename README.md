@@ -3,11 +3,12 @@
 ### **Welcome 👾👾👾**
 Para inicializar el proyecto, clona este repositorio y sigue las siguientes instrucciones:
     - Instalación de Librerias :
-    ```bash
-      #pip3 install opencv-python;
-      #pip3 install pyzbar;
-      #pip3 install PyQt5;
-      #pip3 install tempfile
+    ```
+      pip3 install opencv-python;
+      pip3 install pyzbar;
+      pip3 install PyQt5;
+      pip3 install tempfile
+      
     ```
 
 The first part will be the Solana Smart Contract that you will see It inside the Smart-Contract directory
