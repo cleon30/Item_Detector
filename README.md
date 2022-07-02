@@ -1,6 +1,6 @@
 # Detector de Stock 
 
-### **Welcome 👾👾👾**
+### **Bienvenido 👾👾👾**
 Para inicializar el proyecto, clona este repositorio y sigue las siguientes instrucciones:
 ## Instalación de Librerias :
 ```bash
