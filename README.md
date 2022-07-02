@@ -8,7 +8,6 @@ Para inicializar el proyecto, clona este repositorio y sigue las siguientes inst
       pip3 install pyzbar;
       pip3 install PyQt5;
       pip3 install tempfile
-      
     ```
 
 The first part will be the Solana Smart Contract that you will see It inside the Smart-Contract directory
