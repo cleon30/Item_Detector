@@ -1,18 +1,20 @@
+############################################################
+# Se importan librerias 
 import sys
-from PyQt5 import uic
+from PyQt5 import uic # Librerias PyQt5 para el diseño de la aplicación 
 #Cargar nuestro formulario *.ui
-formulario = 'interficieQT.ui'
-form_class = uic.loadUiType(formulario)[0]
-import cv2 as cv
-import time
-from tempfile import NamedTemporaryFile
-from pyzbar import pyzbar
-import cv2
-from PyQt5.QtWidgets import *
+formulario = 'interficieQT.ui' # Nombre de la interfaz de PyQt5 
+form_class = uic.loadUiType(formulario)[0] 
+import cv2 as cv # Se importa OpenCV para el procesamiento de imagen y análisis DeepLearning
+import time      # Libreria de Tiempo
+from tempfile import NamedTemporaryFile #Libreria para obtención de archivos temporales
+from pyzbar import pyzbar       # Libreria para decodificación de QR
+from PyQt5.QtWidgets import *   # Modulos de la libreria PyQt5
 from PyQt5.QtGui import *
 import sys
 from PyQt5.QtWidgets import (QApplication, QFileDialog, QMessageBox)
-
+####################################################################
+####################################################################
 class captura:
     """ Clase captura, trata con imagenes de una camara de su establecimiento """
 
@@ -29,56 +31,54 @@ class captura:
 
     def detect(self, frame):
         """detecta y localiza codigos QR de una imagen con muchos QRs mediante Inteligencia Artificial y devuelve un array de sus codigos decodificados"""
-        width = 640
-        height = 640
-        if frame.shape[1] > 1024 or frame.shape[0] > 1024:
+        width = 640 # Amplitud
+        height = 640 # Altura
+        if frame.shape[1] > 1024 or frame.shape[0] > 1024: # Mas que nada, para evitar imagenes fuera de rango se hace reajuste
             width = 1024
             height = 1024
             captura.model.setInputParams(size=(width, height), scale=1 / 255, swapRB=True)
 
         # Inferencing
-        CONFIDENCE_THRESHOLD = 0.2
-        NMS_THRESHOLD = 0.4
-        COLOR_RED = (0, 0, 255)
-        COLOR_BLUE = (255, 0, 0)
-        start_time = time.time()
-        classes, scores, boxes = captura.model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
-        elapsed_ms = time.time() - start_time
-        dictionary = {}
-        array = []
+        CONFIDENCE_THRESHOLD = 0.2 # Equivale a la inversa del margen de fiabilidad 1-0.2 = 80 % confianza
+        NMS_THRESHOLD = 0.4         # Parametro para seleccion de Bounding Box
+        COLOR_RED = (0, 0, 255)     # Color rojo en RGB
+        COLOR_BLUE = (255, 0, 0)    # Color azul en RGB
+        start_time = time.time()    # Tiempo actual
+        classes, scores, boxes = captura.model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD) # Nombre de objeto, confianza y rectangulo que lo encapsula
+        elapsed_ms = time.time() - start_time # Tiempo que ha pasado 
+        
+        array = [] # Array donde se iran colocando los alimentos encontrados
      
         cv.putText(frame, '%.2f s, Qr found: %d' % (elapsed_ms, len(classes)), (240, 340), cv.FONT_HERSHEY_SIMPLEX, 5,
-                   COLOR_RED, 20)
-        class_names = open('data/obj.names').read().strip().split('\n')
-        for (classid, score, box) in zip(classes, scores, boxes):
-            label = "%s : %f" % (class_names[classid], score)
-            cv.rectangle(frame, box, COLOR_BLUE, 10)
-            cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2)
-            x, y, w, h = box
-            ROI = frame[y:y + h, x:x + w]
-            
-            print()
-            QR.decode(ROI, dictionary, array, frame, x, y)
-        cv2.imwrite('image.jpg', frame)
-        return array
-
-    net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights')
-    net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
-    model = cv.dnn_DetectionModel(net)
-
+                   COLOR_RED, 20)                                       # Texto donde se añadira a la imagen para indicar el numeor de QR detectados
+        class_names = open('data/obj.names').read().strip().split('\n') # QR_CODE de la base de datos Pre Entrenada
+        for (classid, score, box) in zip(classes, scores, boxes):       # Se analizara individualmente cada elemento detectado
+            label = "%s : %f" % (class_names[classid], score)           # Nombre de la variable y su puntuacion
+            cv.rectangle(frame, box, COLOR_BLUE, 10)                    # Rectangulo de Encapsulacion de la deteccion del QR
+            cv.putText(frame, label, (box[0], box[1] - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE, 2) #Se agregara el nombre y encapsulacion de color a la imagen original
+            x, y, w, h = box                                            # Coordenadas de la caja de encapsulacion del QR detectado
+            ROI = frame[y:y + h, x:x + w]                               # Extraccion del QR de la propia imagen. Se obtiene las coordenadas de este en la imagen original.
+            QR.decode(ROI, array, frame, x, y)                          # Se utiliza la funcion de decodificacion para el QR extraido de la imagen original
+        cv.imwrite('image.jpg', frame)                                  # Se guarda esta nueva imagen modificada con los recuadros y textos como 'image.jpg' para poder tratarla en el PyQt5 designer
+        return array                                                    #Devuelve el array con los nombres de alimentos obtenidos
+################ Parte de Deep Learning de Modelo Pre Entrenado Darknet YoLov4 #####################################################
+    net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights') # Mediante la libreria OpenCV
+    net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)                 # Se carga los pesos y la configuracion realizada con la base de datos de QR y su clasificacion correspondiente
+    model = cv.dnn_DetectionModel(net)                                  # Se carga la configuracion final al modelo de Deep Learning
+##################################################################################################################
     def procesaI(self):
         """procesa la captura y devuelve una lista de los productos que faltan detectados """
 
-        frame = captura.read(self.path)
-        datos = captura.detect(self.path, frame)
+        frame = captura.read(self.path)          # Lectura del fichero de entrada
+        datos = captura.detect(self.path, frame) # Llama a la deteccion y decodificacion 
         
         print(datos)
-        cv2.destroyAllWindows()
+        cv.destroyAllWindows()                   # Cierra ventana de OpenCV
 
-        #lista de productos, si lee un QR que no correspone a un producto no lo añade
+        # Lista de productos, si lee un QR que no correspone a un producto no lo añade
         products = ["Chorizo", "Fuet", "mini Frankfurts", "Jamon en dulce", "Jamon", "Chistorra", "Butifarra", "Pavo",
                     "Queso", "Sobrassada mallorquina", "Sobrasada"]
-
+        # Modo para saber si hay objetos originales y que pertenezcan a la lista de productos
         if len(datos) >= 1:
             for i in datos:
                 if i not in c and i in products:
@@ -93,25 +93,25 @@ class QR:
     """Esta clase trabaja con QR se define con el path de la imagen de un QR"""
     def __init__(self, path):
         self.path = path
-    def decode(self, dictionary, array, frame, x_old, y_old):
+    def decode(self, array, frame, x_old, y_old):
         """ Decodifica codigos QR proporcionado un diccionario y el array"""
         barcodes = pyzbar.decode(self)
         for barcode in barcodes:
-            # The location of the bounding box from which the barcode is extracted
-            # Draw the bounding box of the barcode in the image
+            # La ubicación del cuadro delimitador del que se extrae el código de barras
+            # Dibuje el cuadro delimitador del código de barras en la imagen
             (x, y, w, h) = barcode.rect
-            cv2.rectangle(self, (x, y), (x + w, y + h), (0, 0, 255), 5)
+            cv.rectangle(self, (x, y), (x + w, y + h), (0, 0, 255), 5)
 
-            # The barcode data is a byte object, so if we want to print it on the output image
-            # To draw it, you need to convert it into a string first
+            # Los datos del código de barras son un objeto de byte, por lo que si queremos imprimirlo en la imagen de salida
+            # Para dibujarlo, primero debes convertirlo en una cadena.
             barcodeData = barcode.data.decode("utf-8")
             barcodeType = barcode.type
 
-            # Draw the barcode data and barcode type on the image
+            # Dibuje los datos del código de barras y el tipo de código de barras en la imagen
             text = "{}".format(barcodeData)
-            cv2.putText(frame, text, (x_old , y_old), cv2.FONT_HERSHEY_SIMPLEX,
+            cv.putText(frame, text, (x_old , y_old), cv.FONT_HERSHEY_SIMPLEX,
                         2, (0, 0, 255), 7)
-            #se añaden los textos decodificados a un array
+            # Se añaden los textos decodificados a nuestro array
             
             array.append(barcodeData)
 
@@ -132,7 +132,7 @@ class VIDEO:
 
             ret, frame = self.read()
             file = NamedTemporaryFile(suffix=".jpg",prefix="./frame_",delete=True)
-            cv2.imwrite(file.name, frame)
+            cv.imwrite(file.name, frame)
             ret = captura.detect(file.name, frame)
             captura.show('frame',frame)
 
@@ -149,7 +149,7 @@ class VIDEO:
                         pass
 
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if cv.waitKey(1) & 0xFF == ord('q'):
                 return
 
         except Exception as e:
@@ -273,14 +273,14 @@ class Aplicacion(QWidget, form_class):
         not_repeated = []
         while True:
             if time.time()<timeout:
-                ret = VIDEO.procesaV(cv2.VideoCapture(0))
+                ret = VIDEO.procesaV(cv.VideoCapture(0))
                 for string in c:
                     if string not in not_repeated:
                         self.listWidget.insertItem(0, string)
                         not_repeated.append(string)
                 self.res = ''
             else:
-                cv2.destroyAllWindows()
+                cv.destroyAllWindows()
                 break
     def help(self):
         """Muestra el mensaje de ayuda de la aplicacion"""
