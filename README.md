@@ -1,6 +1,13 @@
 # Detector de Stock 
 
 ### **Bienvenido 👾👾👾**
+###Introducción
+```bash
+Este proyecto tiene como objetivo poder facilitar la detección de falta de stock en supermercados o tiendas, mediante la adición de codigos QR debajo de los productos, de modo que cuando hay falta de material, el propio QR queda al descubierto y la camara puede analizar este QR y saber que producto falta. 
+
+Existen dos modos de uso en nuestra aplicación, el primero es mediante imagenes y el segundo es mediante video. En ambos modos, los frames son analizados mediante un modelo preentrenado de Deep Learning especializado en detección de codigos QR, haciendo que se detecten con facilidad y puedan ser procesados a una libreria de escaneo de codigos QR y asi obtener el producto correspondiente.
+```
+
 Para inicializar el proyecto, clona este repositorio y sigue las siguientes instrucciones:
 ## Instalación de Librerias :
 ```bash
