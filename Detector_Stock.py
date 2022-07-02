@@ -62,7 +62,7 @@ class captura:
         cv.imwrite('image.jpg', frame)                                  # Se guarda esta nueva imagen modificada con los recuadros y textos como 'image.jpg' para poder tratarla en el PyQt5 designer
         return array                                                    #Devuelve el array con los nombres de alimentos obtenidos
 ################ Parte de Deep Learning de Modelo Pre Entrenado Darknet YoLov4 #####################################################
-    net = cv.dnn.readNetFromDarknet('yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights') # Mediante la libreria OpenCV
+    net = cv.dnn.readNetFromDarknet('backup/yolov4-tiny-custom-640.cfg', 'backup/yolov4-tiny-custom-640_last.weights') # Mediante la libreria OpenCV
     net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)                 # Se carga los pesos y la configuracion realizada con la base de datos de QR y su clasificacion correspondiente
     model = cv.dnn_DetectionModel(net)                                  # Se carga la configuracion final al modelo de Deep Learning
 ##################################################################################################################
@@ -197,13 +197,13 @@ class Aplicacion(QWidget, form_class):
         self.listWidget.clear()
         c.clear()
         if self.image1.isChecked():
-            input_image = '6vacios.jpg'
+            input_image = "resources/6vacios.jpg"
             return input_image
         if self.image2.isChecked():
-            input_image = '4vacios.jpg'
+            input_image = "resources/4vacios.jpg"
             return input_image
         if self.image3.isChecked():
-            input_image = '0vacios.jpg'
+            input_image = "resources/0vacios.jpg"
             return input_image
         # Seleccionar una imagen de los archivos del ordenador
         if self.selectfile.isChecked():
